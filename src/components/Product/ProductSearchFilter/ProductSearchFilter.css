@@ -1,0 +1,42 @@
+.ProductSearchFilter {
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Tle {
+  font-weight: 800;
+  font-size: 32px;
+  font-style: italic;
+  color: #333;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.ProductSearchFilter button {
+  border: none;
+  outline: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 25%;
+  margin: 8px;
+  background-color: #f1f1f1;
+  color: #333;
+  border-radius: 10%;
+  border: 1px solid #333;
+}
+
+.ProductSearchFilter button:hover {
+  background-color: #333;
+  color: white;
+  border-radius: 12%;
+}
+
+.Input {
+  width: 100%;
+  border: 1px solid #333;
+  border-radius: 4%;
+  padding: 6px;
+  box-sizing: border-box;
+}
