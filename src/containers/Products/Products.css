@@ -1,14 +1,36 @@
 .Products {
   display: grid;
   grid-template-columns: auto auto auto;
-  padding: 10px;
 }
 
-.Title h1 {
-  font-weight: 800;
-  font-size: 40px;
-  font-style: italic;
-  color: #333;
-  margin-top: 4px;
-  margin-bottom: 4px;
+.Title {
+  margin: 0% 2% auto
+}
+
+.Pagination {
+  display: inline-block;
+  list-style: none;
+}
+
+.Pagination button {
+  border: none;
+  outline: none;
+  padding: 10px 16px;
+  background-color: #f1f1f1;
+  cursor: pointer;
+  border-radius: 25%;
+  margin: 8px;
+  border: 1px solid #333;
+}
+
+.Pagination button:hover {
+  background-color: #333;
+  color: white;
+  border-radius: 25%;
+}
+
+.Active {
+  background-color: #333 !important;
+  color: white;
+  border-radius: 25%;
 }
