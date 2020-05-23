@@ -14,18 +14,133 @@ class Products extends Component {
     super();
     this.state = {
       products: [],
+      filteredProducts: [],
       loading: false,
       currentPage: 1,
       productPerPage: 3,
+      searchValue: "",
+      highActive: "",
+      lowActive: "",
     };
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick(event) {
+  handleClick = (event) => {
     this.setState({
       currentPage: Number(event.target.id),
     });
-  }
+  };
+
+  HighPriceProductHandler = () => {
+    this.manageActiveButton("high");
+    if (this.state.highActive === "") {
+      let products = [...this.state.filteredProducts];
+      products = products.sort(this.highPriceSortCompare);
+      this.setState({
+        products: products,
+      });
+    } else {
+      this.setState({
+        products: this.state.filteredProducts,
+      });
+    }
+  };
+
+  lowPriceProductHandler = () => {
+    this.manageActiveButton("low");
+    if (this.state.lowActive === "") {
+      let products = [...this.state.filteredProducts];
+      products = products.sort(this.lowPriceSortCompare);
+      this.setState({
+        products: products,
+      });
+    } else {
+      this.setState({
+        products: this.state.filteredProducts,
+      });
+    }
+  };
+
+  highPriceSortCompare = (Obj1, Obj2) => {
+    if (Obj1.price > Obj2.price) return -1;
+    if (Obj2.price > Obj1.price) return 1;
+    return 0;
+  };
+
+  lowPriceSortCompare = (Obj1, Obj2) => {
+    if (Obj1.price > Obj2.price) return 1;
+    if (Obj2.price > Obj1.price) return -1;
+    return 0;
+  };
+
+  manageActiveButton = (type) => {
+    if (type === "high") {
+      if (this.state.highActive === "Active") {
+        this.setState({
+          highActive: "",
+          lowActive: "",
+        });
+      } else {
+        this.setState({
+          highActive: "Active",
+          lowActive: "",
+        });
+      }
+      console.log("high", this.state.highActive);
+    } else if (type === "low") {
+      if (this.state.lowActive === "Active") {
+        this.setState({
+          highActive: "",
+          lowActive: "",
+        });
+      } else {
+        this.setState({
+          highActive: "",
+          lowActive: "Active",
+        });
+      }
+    } else {
+      this.setState({
+        highActive: "",
+        lowActive: "",
+      });
+    }
+  };
+
+  searchInputHandler = (event) => {
+    this.setState({
+      searchValue: event.target.value,
+    });
+    if (event.target.value === "") {
+      this.filteredProductEqualProducts();
+    } else {
+      this.filteredProductBasedOnSearchValue(event.target.value);
+    }
+  };
+
+  filteredProductEqualProducts = () => {
+    const products = [...this.state.filteredProducts];
+    this.setState({
+      products: products,
+    });
+  };
+
+  filteredProductBasedOnSearchValue = (search) => {
+    let products = [...this.state.filteredProducts];
+    products = products.filter((product) => {
+      return (
+        product.model.toLowerCase().includes(search.toLowerCase()) ||
+        product.color.toLowerCase().includes(search.toLowerCase()) ||
+        product.os.toLowerCase().includes(search.toLowerCase()) ||
+        product.storage.toLowerCase().includes(search.toLowerCase()) ||
+        product.ram.toLowerCase().includes(search.toLowerCase()) ||
+        product.screenSize.toLowerCase().includes(search.toLowerCase())
+      );
+    });
+    this.setState({
+      products: products,
+    });
+  };
 
   componentDidMount = () => {
     this.setState({ loading: true });
@@ -38,7 +153,11 @@ class Products extends Component {
             ...response.data[key],
           });
         }
-        this.setState({ loading: false, products: Products });
+        this.setState({
+          loading: false,
+          products: Products,
+          filteredProducts: Products,
+        });
         console.log("[Products.js axios call]", Products);
       })
       .catch((error) => {
@@ -96,7 +215,14 @@ class Products extends Component {
       <>
         <div className={productsCSS.Title}>
           {/* <h1>Product List</h1> */}
-          <ProductSearchFilter />
+          <ProductSearchFilter
+            highActive={this.state.highActive}
+            lowActive={this.state.lowActive}
+            value={this.state.searchValue}
+            HighPriceProductClicked={() => this.HighPriceProductHandler()}
+            lowPriceProductClicked={() => this.lowPriceProductHandler()}
+            searchInput={(event) => this.searchInputHandler(event)}
+          />
         </div>
         <div className={productsCSS.Products}>{productList}</div>
         <div className={productsCSS.Pagination}>{renderPageNumbers}</div>
