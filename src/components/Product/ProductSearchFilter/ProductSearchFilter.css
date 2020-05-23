@@ -40,3 +40,9 @@
   padding: 6px;
   box-sizing: border-box;
 }
+
+.Active {
+  background-color: #333 !important;
+  color: white !important;
+  border-radius: 12%;
+}

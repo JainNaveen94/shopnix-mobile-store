@@ -5,14 +5,14 @@ const productSearchFilter = (props) => {
   return (
     <div className={productSearchFilterCSS.ProductSearchFilter}>
       <div>
-        <button>High to Low</button>
-        <button>Low to High</button>
+        <button className={productSearchFilterCSS[props.highActive]} onClick={() => props.HighPriceProductClicked()}>High to Low</button>
+        <button className={productSearchFilterCSS[props.lowActive]} onClick={() => props.lowPriceProductClicked()}>Low to High</button>
       </div>
       <div>
         <span className={productSearchFilterCSS.Tle}>Mobile List</span>
       </div>
       <div>
-        <input className={productSearchFilterCSS.Input} type="text" name="search" value="" placeholder="Search Product" />
+        <input onChange={props.searchInput} className={productSearchFilterCSS.Input} type="text" name="search" value={props.value} placeholder="Search Product" />
       </div>
     </div>
   );
