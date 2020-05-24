@@ -1,0 +1,50 @@
+.Cart table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 90%;
+  border: 1px solid #333;
+  margin: auto;
+}
+
+.Cart th,
+td {
+  text-align: center;
+  padding: 8px;
+  font-size: 20px;
+}
+
+.Cart tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.Cart thead {
+  background-color: #333;
+  font-size: 32px;
+  color: white;
+}
+
+.FirstRow {
+  font-size: 26px !important;
+}
+
+.TotalPrice {
+  font-size: 24px;
+  padding: 16px;
+}
+
+.LastRow {
+  background-color: #333;
+  color: white;
+}
+
+.PriceCol {
+  text-align: left;
+  padding: 10px;
+  padding-left: 30px;
+}
+
+.PurchaseCol {
+  text-align: right;
+  padding: 10px;
+  padding-right: 30px;
+}

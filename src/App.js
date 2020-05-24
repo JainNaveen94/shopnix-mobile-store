@@ -6,6 +6,7 @@ import Layout from "./hoc/Layout/Layout";
 
 import Products from "./containers/Products/Products";
 import ProductDetail from "./containers/Products/ProductDetail/ProductDetail";
+import Cart from "./containers/Cart/Cart";
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
       <Layout>
         <Switch>
           <Route path="/products" exact component={Products} />
-          <Route path="/cart" exact component={Products} />
+          <Route path="/cart" exact component={Cart} />
           <Route path="/product/:id" exact component={ProductDetail} />
           <Redirect from="/" to="/products" exact />
           <Route render={() => <p>Not Found</p>} />
