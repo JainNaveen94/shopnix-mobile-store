@@ -8,6 +8,7 @@ const product = (props) => {
   delete specification.quantity;
   delete specification.price;
   delete specification.id;
+  delete specification.url;
 
   let tableRow = Object.keys(specification).map((key) => {
     return (
@@ -34,7 +35,7 @@ const product = (props) => {
         </table>
       </div>
       <div>
-        <button>View</button>
+        <button className={props.viewButton === 'false'?productCSS.NonDisplay:''} onClick={() => props.viewClicked(props.productDetail.id)}>View</button>
         <button>AddToCart</button>
       </div>
     </div>

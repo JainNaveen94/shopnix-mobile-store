@@ -86,7 +86,6 @@ class Products extends Component {
           lowActive: "",
         });
       }
-      console.log("high", this.state.highActive);
     } else if (type === "low") {
       if (this.state.lowActive === "Active") {
         this.setState({
@@ -158,11 +157,14 @@ class Products extends Component {
           products: Products,
           filteredProducts: Products,
         });
-        console.log("[Products.js axios call]", Products);
       })
       .catch((error) => {
-        this.setState({ loading: false, orders: [] });
+        this.setState({ loading: false, products: [], filteredProducts: [] });
       });
+  };
+
+  viewProductHandler = (productId) => {
+    this.props.history.push("/product/" + productId);
   };
 
   render() {
@@ -177,7 +179,14 @@ class Products extends Component {
     );
 
     let productList = currentProducts.map((product, key) => {
-      return <Product key={product.id} productDetail={product} />;
+      return (
+        <Product
+          viewButton="true"
+          key={product.id}
+          productDetail={product}
+          viewClicked={(productId) => this.viewProductHandler(productId)}
+        />
+      );
     });
 
     // Logic for displaying page numbers

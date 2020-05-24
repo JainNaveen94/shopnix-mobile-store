@@ -5,6 +5,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import Layout from "./hoc/Layout/Layout";
 
 import Products from "./containers/Products/Products";
+import ProductDetail from "./containers/Products/ProductDetail/ProductDetail";
 
 function App() {
   return (
@@ -12,6 +13,8 @@ function App() {
       <Layout>
         <Switch>
           <Route path="/products" exact component={Products} />
+          <Route path="/cart" exact component={Products} />
+          <Route path="/product/:id" exact component={ProductDetail} />
           <Redirect from="/" to="/products" exact />
           <Route render={() => <p>Not Found</p>} />
         </Switch>
