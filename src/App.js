@@ -7,6 +7,7 @@ import Layout from "./hoc/Layout/Layout";
 import Products from "./containers/Products/Products";
 import ProductDetail from "./containers/Products/ProductDetail/ProductDetail";
 import Cart from "./containers/Cart/Cart";
+import PageNotFound from "./components/PageNotFound/PageNotFound";
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
           <Route path="/cart" exact component={Cart} />
           <Route path="/product/:id" exact component={ProductDetail} />
           <Redirect from="/" to="/products" exact />
-          <Route render={() => <p>Not Found</p>} />
+          {/* <Route render={() => <p>Not Found</p>} /> */}
+          <Route component={PageNotFound} />
         </Switch>
         {/* <h1>Main Page</h1> */}
       </Layout>

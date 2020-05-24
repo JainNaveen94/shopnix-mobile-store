@@ -111,7 +111,7 @@ class ProductDetail extends Component {
     let productDetail = (
       <>
         <div className={productDetailCSS.Tle}>
-          <span>Product Detail</span>
+          <span>Mobile Detail</span>
         </div>
         <div className={productDetailCSS.ProductDetail}>
           <div className={productDetailCSS.Image}>

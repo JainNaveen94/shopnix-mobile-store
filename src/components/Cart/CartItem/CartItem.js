@@ -13,6 +13,8 @@ const cartItem = (props) => {
     <tr>
       <td style={{ textAlign: "center" }}>
         <img
+          onClick={() => props.navigateDetailPageClicked(props.item.productId)}
+          style={{ cursor: "pointer" }}
           src={props.item.url}
           width="50px"
           height="50px"
