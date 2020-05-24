@@ -36,7 +36,7 @@ const product = (props) => {
       </div>
       <div>
         <button className={props.viewButton === 'false'?productCSS.NonDisplay:''} onClick={() => props.viewClicked(props.productDetail.id)}>View</button>
-        <button>AddToCart</button>
+        <button onClick={() => props.addToCartClicked(props.productDetail)}>AddToCart</button>
       </div>
     </div>
   );
