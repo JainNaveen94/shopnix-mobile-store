@@ -1,0 +1,65 @@
+.PageTitle {
+  height: 150px;
+  position: relative;
+  z-index: -1;
+}
+
+.PageTitle span {
+  font-family: "Montserrat", sans-serif;
+  font-size: 100px;
+  margin: 0px;
+  font-weight: 900;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  -webkit-text-fill-color: transparent;
+  background-size: cover;
+  background-position: center;
+  background: url("../../assets/images/bg.gif");
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.Href {
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  text-decoration: none;
+  text-transform: uppercase;
+  background: #393a3d;
+  display: inline-block;
+  padding: 15px 30px;
+  border-radius: 40px;
+  color: #fff;
+  font-weight: 700;
+  -webkit-box-shadow: 0px 4px 15px -5px #393a3d;
+  box-shadow: 0px 4px 15px -5px #393a3d;
+}
+
+.Second {
+  display: flex;
+  align-items: center;
+}
+
+.PageSubTitle {
+  height: 50px;
+  position: relative;
+  z-index: -1;
+}
+
+.PageSubTitle span {
+  font-family: "Montserrat", sans-serif;
+  font-size: 28px;
+  margin: 0px;
+  font-weight: 700;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  -webkit-text-fill-color: transparent;
+  background-size: cover;
+  background-position: center;
+  background: url("../../assets/images/bg.gif");
+  -webkit-background-clip: text;
+  color: transparent;
+}
