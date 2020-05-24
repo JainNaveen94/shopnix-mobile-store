@@ -33,7 +33,7 @@ td {
 }
 
 .LastRow {
-  background-color: #333;
+  background-color: #333 !important;
   color: white;
 }
 
