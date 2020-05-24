@@ -1,3 +1,22 @@
 .ProductDetail {
-    
+  display: inline-flex;
+  width: 100%;
+  align-items: center;
+}
+
+.Image {
+  display: flex;
+}
+
+.Card {
+  width: 70%;
+}
+
+.Tle {
+  font-weight: 800;
+  font-size: 32px;
+  font-style: italic;
+  color: #333;
+  margin-top: 4px;
+  margin-bottom: 4px;
 }
