@@ -9,7 +9,7 @@ const productSearchFilter = (props) => {
         <button className={productSearchFilterCSS[props.lowActive]} onClick={() => props.lowPriceProductClicked()}>Low to High</button>
       </div>
       <div>
-        <span className={productSearchFilterCSS.Tle}>Mobile List</span>
+        <span className={productSearchFilterCSS.Tle}>Shopnix Dashboard</span>
       </div>
       <div>
         <input onChange={props.searchInput} className={productSearchFilterCSS.Input} type="text" name="search" value={props.value} placeholder="Search Product" />

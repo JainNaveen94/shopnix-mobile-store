@@ -177,6 +177,10 @@ class Cart extends Component {
     //       loading: false,
     //     });
     //   });
+  };
+
+  navigateDetailPageHandler = (productId) => {
+    this.props.history.push("/product/" + productId);
   }
 
   render() {
@@ -191,6 +195,9 @@ class Cart extends Component {
           }
           decrementQuantityClicked={(item) =>
             this.decrementQuantityHandler(item)
+          }
+          navigateDetailPageClicked={(productId) =>
+            this.navigateDetailPageHandler(productId)
           }
         />
       );
