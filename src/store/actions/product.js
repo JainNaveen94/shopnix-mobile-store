@@ -31,6 +31,8 @@ export const setLoading = (loading) => {
 
 export const initProducts = () => {
   return (dispatch) => {
+    const loading = true;
+    dispatch(setLoading(loading));
     axios
       .get("/products.json")
       .then((response) => {
@@ -40,16 +42,9 @@ export const initProducts = () => {
             ...response.data[key],
           });
         }
-        setProducts(Products);
-        // this.setState({
-        //   loading: false,
-        //   products: Products,
-        //   filteredProducts: Products,
-        // });
         dispatch(setProducts(Products))
       })
       .catch((error) => {
-        // this.setState({ loading: false, products: [], filteredProducts: [] });
         dispatch(setProductsError())
       });
   };

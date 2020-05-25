@@ -18,9 +18,6 @@ class Products extends Component {
   constructor() {
     super();
     this.state = {
-      // products: [],
-      // filteredProducts: [],
-      // loading: false,
       currentPage: 1,
       productPerPage: 3,
       searchValue: "",
@@ -43,15 +40,9 @@ class Products extends Component {
     if (this.state.highActive === "") {
       let products = [...this.props.filteredProducts];
       products = products.sort(this.highPriceSortCompare);
-      // this.setState({
-      //   products: products,
-      // });
       this.props.setProductsForPagination(products);
     } else {
       this.props.setProductsForPagination(this.props.filteredProducts);
-      // this.setState({
-      //   products: this.state.filteredProducts,
-      // });
     }
   };
 
@@ -60,15 +51,9 @@ class Products extends Component {
     if (this.state.lowActive === "") {
       let products = [...this.props.filteredProducts];
       products = products.sort(this.lowPriceSortCompare);
-      // this.setState({
-      //   products: products,
-      // });
       this.props.setProductsForPagination(products);
     } else {
       this.props.setProductsForPagination(this.props.filteredProducts);
-      // this.setState({
-      //   products: this.state.filteredProducts,
-      // });
     }
   };
 
@@ -130,9 +115,6 @@ class Products extends Component {
 
   filteredProductEqualProducts = () => {
     const products = [...this.props.filteredProducts];
-    // this.setState({
-    //   products: products,
-    // });
     this.props.setProductsForPagination(products);
   };
 
@@ -148,32 +130,10 @@ class Products extends Component {
         product.screenSize.toLowerCase().includes(search.toLowerCase())
       );
     });
-    // this.setState({
-    //   products: products,
-    // });
     this.props.setProductsForPagination(products);
   };
 
   componentDidMount = () => {
-    // this.setState({ loading: true });
-    // axios
-    //   .get("/products.json")
-    //   .then((response) => {
-    //     const Products = [];
-    //     for (let key in response.data) {
-    //       Products.push({
-    //         ...response.data[key],
-    //       });
-    //     }
-    //     this.setState({
-    //       loading: false,
-    //       products: Products,
-    //       filteredProducts: Products,
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     this.setState({ loading: false, products: [], filteredProducts: [] });
-    //   });
     this.props.onInitProducts();
   };
 
@@ -221,22 +181,13 @@ class Products extends Component {
   };
 
   addNewProductToCart = (cartItem) => {
-    // this.setState({
-    //   loading: true,
-    // });
     this.props.setLoading(true);
     axios
       .post("/cart.json", cartItem)
       .then((response) => {
-        // this.setState({
-        //   loading: false,
-        // });
         this.props.setLoading(false);
       })
       .catch((error) => {
-        // this.setState({
-        //   loading: false,
-        // });
         this.props.setLoading(false);
       });
   };
@@ -351,18 +302,18 @@ class Products extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    products: state.products,
-    filteredProducts: state.filteredProducts,
-    loading: state.loading,
+    products: state.product.products,
+    filteredProducts: state.product.filteredProducts,
+    loading: state.product.loading,
   };
 };
 
 const mapDispatcherToProps = (dispatch) => {
   return {
     onInitProducts: () => dispatch(productAction.initProducts()),
+    setLoading: (loading) => dispatch(productAction.setLoading(loading)),
     setProductsForPagination: (products) =>
       dispatch(productAction.setProductsPagination(products)),
-    setLoading: (loading) => dispatch(productAction.setLoading(loading)),
   };
 };
 
