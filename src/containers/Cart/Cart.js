@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+
 import cartCSS from "./Cart.css";
 
 import CartItem from "../../components/Cart/CartItem/CartItem";
@@ -6,47 +8,25 @@ import purchaseLogo from "../../assets/icons/purchase.svg";
 
 import Spinner from "../../components/UI/Spinner/Spinner";
 import Model from "../../components/UI/Model/Model";
+import WithErrorHandler from "../../hoc/WithErrorHandler/WithErrorHandler";
 
 import axios from "../../services/axios/axios-product";
 
+import * as cartAction from "../../store/actions/index";
+
 class Cart extends Component {
   state = {
-    cartItems: [],
-    loading: false,
     showModel: false,
     modelMessage: "",
   };
 
   componentDidMount = () => {
-    this.setState({
-      loading: true,
-    });
-    axios
-      .get("/cart.json")
-      .then((response) => {
-        const cartItems = [];
-        for (let key in response.data) {
-          cartItems.push({
-            ...response.data[key],
-            id: key,
-          });
-        }
-        this.setState({
-          cartItems: cartItems,
-          loading: false,
-        });
-      })
-      .catch((error) => {
-        this.setState({
-          cartItems: [],
-          loading: false,
-        });
-      });
+    this.props.onInitCart();
   };
 
   calculateCartPrice = () => {
     let totalPrice = 0;
-    const cartItems = [...this.state.cartItems];
+    const cartItems = [...this.props.cartItems];
     cartItems.forEach((item) => {
       totalPrice = totalPrice + item.quantity * item.price;
     });
@@ -54,26 +34,19 @@ class Cart extends Component {
   };
 
   deleteItemFromCartHandler = (id) => {
-    this.setState({
-      loading: true,
-    });
+    this.props.setLoading(true);
     axios
       .delete("/cart/" + id + ".json")
       .then((response) => {
-        const cartItems = [...this.state.cartItems];
+        const cartItems = [...this.props.cartItems];
         cartItems.splice(
           cartItems.findIndex((item) => item.id === id),
           1
         );
-        this.setState({
-          loading: false,
-          cartItems: cartItems,
-        });
+        this.props.updateCart(cartItems);
       })
       .catch((error) => {
-        this.setState({
-          loading: false,
-        });
+        this.props.setLoading(false);
       });
   };
 
@@ -116,12 +89,10 @@ class Cart extends Component {
     axios
       .patch("/cart/" + item.id + ".json", { quantity: item.quantity })
       .then((response) => {
-        const cartItems = [...this.state.cartItems];
+        const cartItems = [...this.props.cartItems];
         const index = cartItems.findIndex((itm) => itm.id === item.id);
         cartItems[index].quantity = item.quantity;
-        this.setState({
-          cartItems: cartItems,
-        });
+        this.props.updateCart(cartItems);
       })
       .catch((error) => {
         this.setState({
@@ -136,12 +107,10 @@ class Cart extends Component {
     axios
       .patch("/cart/" + item.id + ".json", { quantity: item.quantity })
       .then((response) => {
-        const cartItems = [...this.state.cartItems];
+        const cartItems = [...this.props.cartItems];
         const index = cartItems.findIndex((itm) => itm.id === item.id);
         cartItems[index].quantity = item.quantity;
-        this.setState({
-          cartItems: cartItems,
-        });
+        this.props.updateCart(cartItems);
       })
       .catch((error) => {
         this.setState({
@@ -181,10 +150,10 @@ class Cart extends Component {
 
   navigateDetailPageHandler = (productId) => {
     this.props.history.push("/product/" + productId);
-  }
+  };
 
   render() {
-    let cartItems = this.state.cartItems.map((item) => {
+    let cartItems = this.props.cartItems.map((item) => {
       return (
         <CartItem
           key={item.id}
@@ -242,7 +211,7 @@ class Cart extends Component {
       </div>
     );
 
-    if (this.state.loading) {
+    if (this.props.loading) {
       cartDisplayed = <Spinner />;
     }
 
@@ -260,4 +229,22 @@ class Cart extends Component {
   }
 }
 
-export default Cart;
+const mapStateToProps = (state) => {
+  return {
+    cartItems: state.cart.cartItems,
+    loading: state.cart.loading,
+  };
+};
+
+const mapDispatcherToProps = (dispatch) => {
+  return {
+    onInitCart: () => dispatch(cartAction.initCart()),
+    setLoading: (loading) => dispatch(cartAction.setCartLoading(loading)),
+    updateCart: (cartItems) => dispatch(cartAction.updateCart(cartItems)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatcherToProps
+)(WithErrorHandler(Cart, axios));

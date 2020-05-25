@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+
 import productsCSS from "./Products.css";
 
 import Spinner from "../../components/UI/Spinner/Spinner";
@@ -10,13 +12,12 @@ import ProductSearchFilter from "../../components/Product/ProductSearchFilter/Pr
 
 import axios from "../../services/axios/axios-product";
 
+import * as productAction from "../../store/actions/index";
+
 class Products extends Component {
   constructor() {
     super();
     this.state = {
-      products: [],
-      filteredProducts: [],
-      loading: false,
       currentPage: 1,
       productPerPage: 3,
       searchValue: "",
@@ -37,30 +38,22 @@ class Products extends Component {
   HighPriceProductHandler = () => {
     this.manageActiveButton("high");
     if (this.state.highActive === "") {
-      let products = [...this.state.filteredProducts];
+      let products = [...this.props.filteredProducts];
       products = products.sort(this.highPriceSortCompare);
-      this.setState({
-        products: products,
-      });
+      this.props.setProductsForPagination(products);
     } else {
-      this.setState({
-        products: this.state.filteredProducts,
-      });
+      this.props.setProductsForPagination(this.props.filteredProducts);
     }
   };
 
   lowPriceProductHandler = () => {
     this.manageActiveButton("low");
     if (this.state.lowActive === "") {
-      let products = [...this.state.filteredProducts];
+      let products = [...this.props.filteredProducts];
       products = products.sort(this.lowPriceSortCompare);
-      this.setState({
-        products: products,
-      });
+      this.props.setProductsForPagination(products);
     } else {
-      this.setState({
-        products: this.state.filteredProducts,
-      });
+      this.props.setProductsForPagination(this.props.filteredProducts);
     }
   };
 
@@ -121,14 +114,12 @@ class Products extends Component {
   };
 
   filteredProductEqualProducts = () => {
-    const products = [...this.state.filteredProducts];
-    this.setState({
-      products: products,
-    });
+    const products = [...this.props.filteredProducts];
+    this.props.setProductsForPagination(products);
   };
 
   filteredProductBasedOnSearchValue = (search) => {
-    let products = [...this.state.filteredProducts];
+    let products = [...this.props.filteredProducts];
     products = products.filter((product) => {
       return (
         product.model.toLowerCase().includes(search.toLowerCase()) ||
@@ -139,31 +130,11 @@ class Products extends Component {
         product.screenSize.toLowerCase().includes(search.toLowerCase())
       );
     });
-    this.setState({
-      products: products,
-    });
+    this.props.setProductsForPagination(products);
   };
 
   componentDidMount = () => {
-    this.setState({ loading: true });
-    axios
-      .get("/products.json")
-      .then((response) => {
-        const Products = [];
-        for (let key in response.data) {
-          Products.push({
-            ...response.data[key],
-          });
-        }
-        this.setState({
-          loading: false,
-          products: Products,
-          filteredProducts: Products,
-        });
-      })
-      .catch((error) => {
-        this.setState({ loading: false, products: [], filteredProducts: [] });
-      });
+    this.props.onInitProducts();
   };
 
   viewProductHandler = (productId) => {
@@ -210,20 +181,14 @@ class Products extends Component {
   };
 
   addNewProductToCart = (cartItem) => {
-    this.setState({
-      loading: true,
-    });
+    this.props.setLoading(true);
     axios
       .post("/cart.json", cartItem)
       .then((response) => {
-        this.setState({
-          loading: false,
-        });
+        this.props.setLoading(false);
       })
       .catch((error) => {
-        this.setState({
-          loading: false,
-        });
+        this.props.setLoading(false);
       });
   };
 
@@ -245,7 +210,8 @@ class Products extends Component {
   };
 
   render() {
-    const { products, currentPage, productPerPage } = this.state;
+    const { currentPage, productPerPage } = this.state;
+    const products = this.props.products;
 
     // Logic for displaying products
     const indexOfLastProduct = currentPage * productPerPage;
@@ -317,7 +283,7 @@ class Products extends Component {
       </>
     );
 
-    if (this.state.loading) {
+    if (this.props.loading) {
       productsDisplay = <Spinner />;
     }
     return (
@@ -334,4 +300,24 @@ class Products extends Component {
   }
 }
 
-export default WithErrorHandler(Products, axios);
+const mapStateToProps = (state) => {
+  return {
+    products: state.product.products,
+    filteredProducts: state.product.filteredProducts,
+    loading: state.product.loading,
+  };
+};
+
+const mapDispatcherToProps = (dispatch) => {
+  return {
+    onInitProducts: () => dispatch(productAction.initProducts()),
+    setLoading: (loading) => dispatch(productAction.setLoading(loading)),
+    setProductsForPagination: (products) =>
+      dispatch(productAction.setProductsPagination(products)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatcherToProps
+)(WithErrorHandler(Products, axios));

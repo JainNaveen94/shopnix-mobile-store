@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+
 import productDetailCSS from "./ProductDetail.css";
 
 import axios from "../../../services/axios/axios-product";
@@ -8,29 +10,32 @@ import Spinner from "../../../components/UI/Spinner/Spinner";
 import Model from "../../../components/UI/Model/Model";
 import WithErrorHandler from "../../../hoc/WithErrorHandler/WithErrorHandler";
 
+import * as productDetailAction from "../../../store/actions/index";
+
 class ProductDetail extends Component {
   state = {
-    product: {},
-    loading: false,
+    // product: {},
+    // loading: false,
     addtoCartMessage: "",
     addtoCartModel: false,
   };
 
   componentDidMount = () => {
-    this.setState({ loading: true });
-    axios
-      .get("/products/" + this.props.match.params.id + ".json")
-      .then((response) => {
-        if (response.data) {
-          this.setState({
-            loading: false,
-            product: response.data,
-          });
-        }
-      })
-      .catch((error) => {
-        this.setState({ loading: false, product: {} });
-      });
+    // this.setState({ loading: true });
+    this.props.onInitProductDetail(this.props.match.params.id);
+    // axios
+    //   .get("/products/" + this.props.match.params.id + ".json")
+    //   .then((response) => {
+    //     if (response.data) {
+    //       this.setState({
+    //         loading: false,
+    //         product: response.data,
+    //       });
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     this.setState({ loading: false, product: {} });
+    //   });
   };
 
   addToCartHandler = (productDetail) => {
@@ -73,20 +78,23 @@ class ProductDetail extends Component {
   };
 
   addNewProductToCart = (cartItem) => {
-    this.setState({
-      loading: true,
-    });
+    // this.setState({
+    //   loading: true,
+    // });
+    this.props.setLoading(true);
     axios
       .post("/cart.json", cartItem)
       .then((response) => {
-        this.setState({
-          loading: false,
-        });
+        // this.setState({
+        //   loading: false,
+        // });
+        this.props.setLoading(false);
       })
       .catch((error) => {
-        this.setState({
-          loading: false,
-        });
+        // this.setState({
+        //   loading: false,
+        // });
+        this.props.setLoading(false);
       });
   };
 
@@ -116,7 +124,7 @@ class ProductDetail extends Component {
         <div className={productDetailCSS.ProductDetail}>
           <div className={productDetailCSS.Image}>
             <img
-              src={this.state.product.url}
+              src={this.props.product.url}
               width="74%"
               height="74%"
               alt="Not Available"
@@ -125,8 +133,8 @@ class ProductDetail extends Component {
           <div className={productDetailCSS.Card}>
             <Product
               viewButton="false"
-              key={this.state.product.id}
-              productDetail={this.state.product}
+              key={this.props.product.id}
+              productDetail={this.props.product}
               addToCartClicked={(productDetail) =>
                 this.addToCartHandler(productDetail)
               }
@@ -136,7 +144,7 @@ class ProductDetail extends Component {
       </>
     );
 
-    if (this.state.loading) {
+    if (this.props.loading) {
       productDetail = <Spinner />;
     }
 
@@ -154,4 +162,23 @@ class ProductDetail extends Component {
   }
 }
 
-export default WithErrorHandler(ProductDetail, axios);
+const mapStateToProps = (state) => {
+  return {
+    product: state.productDetail.product,
+    loading: state.productDetail.loading,
+  };
+};
+
+const mapDispatcherToProps = (dispatch) => {
+  return {
+    onInitProductDetail: (id) =>
+      dispatch(productDetailAction.initProductDetail(id)),
+    setLoading: (loading) =>
+      dispatch(productDetailAction.setProductDetailLoading(loading)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatcherToProps
+)(WithErrorHandler(ProductDetail, axios));
