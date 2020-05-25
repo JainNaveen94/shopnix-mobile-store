@@ -128,24 +128,25 @@ class Cart extends Component {
   };
 
   purchaseOrderHandler = () => {
-    // axios
-    //   .delete("/cart.json")
-    //   .then((response) => {
-    //     const cartItems = [...this.state.cartItems];
-    //     cartItems.splice(
-    //       cartItems.findIndex((item) => item.id === id),
-    //       1
-    //     );
-    //     this.setState({
-    //       loading: false,
-    //       cartItems: cartItems,
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     this.setState({
-    //       loading: false,
-    //     });
-    //   });
+    this.props.setLoading(true);
+    axios
+      .delete("/cart.json")
+      .then((response) => {
+        this.props.setLoading(false);
+        const orderId = (Date.now() + Math.random()).toFixed(0);
+        this.setState({
+          showModel: true,
+          modelMessage: `Order is Successfully Generated With Order Id ${orderId}`,
+        });
+        this.props.updateCart([]);
+      })
+      .catch((error) => {
+        this.props.setLoading(false);
+        this.setState({
+          showModel: true,
+          modelMessage: `Order is not Generated due to some Server issue`,
+        });
+      });
   };
 
   navigateDetailPageHandler = (productId) => {
@@ -172,6 +173,20 @@ class Cart extends Component {
       );
     });
 
+    let imageDisplay = (
+      <img
+        onClick={() => this.purchaseOrderHandler()}
+        style={{ cursor: "pointer" }}
+        src={purchaseLogo}
+        width="50px"
+        height="50px"
+        alt="Not Available"
+      />
+    );
+    if(this.props.cartItems.length === 0) {
+      imageDisplay = null;
+    }
+
     let cartDisplayed = (
       <div className={cartCSS.Cart}>
         <div>
@@ -195,14 +210,7 @@ class Cart extends Component {
                   <strong>Total Price : </strong>Rs.{this.calculateCartPrice()}
                 </td>
                 <td colSpan="3" className={cartCSS.PurchaseCol}>
-                  <img
-                    onClick={() => this.purchaseOrderHandler()}
-                    style={{ cursor: "pointer" }}
-                    src={purchaseLogo}
-                    width="50px"
-                    height="50px"
-                    alt="Not Available"
-                  />
+                  {imageDisplay}
                 </td>
               </tr>
             </tbody>
