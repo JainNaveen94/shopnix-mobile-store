@@ -16,38 +16,11 @@ import * as cartAction from "../../store/actions/index";
 
 class Cart extends Component {
   state = {
-    // cartItems: [],
-    // loading: false,
     showModel: false,
     modelMessage: "",
   };
 
   componentDidMount = () => {
-    // this.setState({
-    //   loading: true,
-    // });
-    // axios
-    //   .get("/cart.json")
-    //   .then((response) => {
-    //     const cartItems = [];
-    //     for (let key in response.data) {
-    //       cartItems.push({
-    //         ...response.data[key],
-    //         id: key,
-    //       });
-    //     }
-    //     this.setState({
-    //       cartItems: cartItems,
-    //       loading: false,
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     this.setState({
-    //       cartItems: [],
-    //       loading: false,
-    //     });
-    //   });
-
     this.props.onInitCart();
   };
 
@@ -61,9 +34,6 @@ class Cart extends Component {
   };
 
   deleteItemFromCartHandler = (id) => {
-    // this.setState({
-    //   loading: true,
-    // });
     this.props.setLoading(true);
     axios
       .delete("/cart/" + id + ".json")
@@ -73,16 +43,9 @@ class Cart extends Component {
           cartItems.findIndex((item) => item.id === id),
           1
         );
-        // this.setState({
-        //   loading: false,
-        //   cartItems: cartItems,
-        // });
         this.props.updateCart(cartItems);
       })
       .catch((error) => {
-        // this.setState({
-        //   loading: false,
-        // });
         this.props.setLoading(false);
       });
   };
@@ -129,9 +92,6 @@ class Cart extends Component {
         const cartItems = [...this.props.cartItems];
         const index = cartItems.findIndex((itm) => itm.id === item.id);
         cartItems[index].quantity = item.quantity;
-        // this.setState({
-        //   cartItems: cartItems,
-        // });
         this.props.updateCart(cartItems);
       })
       .catch((error) => {
@@ -150,9 +110,6 @@ class Cart extends Component {
         const cartItems = [...this.props.cartItems];
         const index = cartItems.findIndex((itm) => itm.id === item.id);
         cartItems[index].quantity = item.quantity;
-        // this.setState({
-        //   cartItems: cartItems,
-        // });
         this.props.updateCart(cartItems);
       })
       .catch((error) => {

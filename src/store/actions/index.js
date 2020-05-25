@@ -1,15 +1,5 @@
-export {
-    initProducts,
-    setProductsPagination,
-    setLoading
-} from "./product"
+export { initProducts, setProductsPagination, setLoading } from "./product";
 
-export {
-    initCart,
-    updateCart,
-    setCartLoading
-} from "./cart"
+export { initCart, updateCart, setCartLoading } from "./cart";
 
-export {
-
-} from "./productDetail"
+export { setProductDetailLoading, initProductDetail } from "./productDetail";
