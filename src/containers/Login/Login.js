@@ -4,6 +4,7 @@ import loginCSS from "./Login.css";
 
 import Button from "../../components/UI/Button/Button";
 import Spinner from "../../components/UI/Spinner/Spinner";
+import Model from "../../components/UI/Model/Model";
 import WithErrorHandler from "../../hoc/WithErrorHandler/WithErrorHandler";
 import Input from "../../components/UI/Input/Input";
 
@@ -25,7 +26,7 @@ class Login extends Component {
         valid: false,
         touched: false,
       },
-      street: {
+      password: {
         elementType: "input",
         elementConfig: {
           type: "password",
@@ -41,6 +42,15 @@ class Login extends Component {
     },
     formIsValid: false,
     loading: false,
+    loginModel: false,
+    modelMessage: "",
+  };
+
+  modelCloseHandler = () => {
+    this.setState({
+      loginModel: false,
+      modelMessage: "",
+    });
   };
 
   getLoginDetails() {
@@ -59,12 +69,48 @@ class Login extends Component {
       loading: true,
     });
     const loginDetails = this.getLoginDetails();
-    console.log(loginDetails);
-    localStorage.setItem("Token", "admin");
-    this.setState({
-      loading: false,
-    });
-    this.props.history.push("/products");
+    if (loginDetails.name === "admin" && loginDetails.password === "admin") {
+      localStorage.setItem("Token", loginDetails.name);
+      this.setState({
+        loading: false,
+      });
+      this.props.history.push("/products");
+    } else {
+      localStorage.removeItem("Token");
+      this.setState({
+        loading: false,
+        loginModel: true,
+        modelMessage: "Please Enter the Valid Credentials To Login",
+        loginForm: {
+          name: {
+            elementType: "input",
+            elementConfig: {
+              type: "text",
+              placeholder: "User Name",
+            },
+            value: "",
+            validation: {
+              required: true,
+            },
+            valid: false,
+            touched: false,
+          },
+          password: {
+            elementType: "input",
+            elementConfig: {
+              type: "password",
+              placeholder: "Password",
+            },
+            value: "",
+            validation: {
+              required: true,
+            },
+            valid: false,
+            touched: false,
+          },
+        },
+      });
+    }
   };
 
   checkValidity(value, rules) {
@@ -141,10 +187,18 @@ class Login extends Component {
       form = <Spinner />;
     }
     return (
-      <div className={loginCSS.LoginData}>
-        <p>::: Enter Your Login Details :::</p>
-        {form}
-      </div>
+      <>
+        <Model
+          show={this.state.loginModel}
+          modelClose={() => this.modelCloseHandler()}
+        >
+          <h3>{this.state.modelMessage}</h3>
+        </Model>
+        <div className={loginCSS.LoginData}>
+          <p>::: Enter Your Login Details :::</p>
+          {form}
+        </div>
+      </>
     );
   }
 }

@@ -128,7 +128,8 @@ class Cart extends Component {
   };
 
   purchaseOrderHandler = () => {
-    this.props.setLoading(true);
+    if(localStorage.getItem('Token') === 'admin') {
+      this.props.setLoading(true);
     axios
       .delete("/cart.json")
       .then((response) => {
@@ -147,6 +148,10 @@ class Cart extends Component {
           modelMessage: `Order is not Generated due to some Server issue`,
         });
       });
+    } else {
+      this.props.history.push("/login");
+    }
+    
   };
 
   navigateDetailPageHandler = (productId) => {
