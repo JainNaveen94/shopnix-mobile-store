@@ -8,6 +8,7 @@ import Products from "./containers/Products/Products";
 import ProductDetail from "./containers/Products/ProductDetail/ProductDetail";
 import Cart from "./containers/Cart/Cart";
 import PageNotFound from "./components/PageNotFound/PageNotFound";
+import Login from "./containers/Login/Login";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Switch>
           <Route path="/products" exact component={Products} />
           <Route path="/cart" exact component={Cart} />
+          <Route path="/login" exact component={Login} />
           <Route path="/product/:id" exact component={ProductDetail} />
           <Redirect from="/" to="/products" exact />
           {/* <Route render={() => <p>Not Found</p>} /> */}
