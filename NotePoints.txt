@@ -1,0 +1,13 @@
+Points For The React Assignment ::
+	1. Here Firebase is used instead of json server already asked same to Ayush.
+	2. For Login Currently Admin is allowed to Login There. (id :: admin and password :: admin)
+	3. As per my assumption from assignment is that any body is allowded to view product and add it into cart but for purchase, login should be required.
+	4. It is avialble on http://nav-shopnix-mob.surge.sh/
+	5. Nessary Api Call to view Jsons Are ::
+		5.1 :: Main API => https://react-shopnix-mobile-store.firebaseio.com/
+		5.2 :: Products List ==> https://react-shopnix-mobile-store.firebaseio.com/products.json
+		5.3 :: Specific Product ===> https://react-shopnix-mobile-store.firebaseio.com/products/prod1.json (prod1) is id of product replace it with other avilable ids to get their detail
+		5.4 :: cart List ===> https://react-shopnix-mobile-store.firebaseio.com/cart.json
+	6. Other then that in this Project every thing is Customised through css no design library is used in it.
+		===> UI Custom Components are available in UI Folder under componenet folder having Model, backdrop, spinner, button etc UI Component used commonly throughout the Application.
+
